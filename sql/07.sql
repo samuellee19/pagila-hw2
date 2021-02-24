@@ -7,11 +7,13 @@
  * You may choose whichever solution makes the most sense to you.
  */
 
-SELECT title FROM film
+SELECT DISTINCT(title) FROM inventory
+INNER JOIN film ON inventory.film_id = film.film_id
 WHERE film.film_id NOT IN (SELECT film_id FROM rental
-     LEFT JOIN inventory ON rental.inventory_id = inventory.inventory_id
-     LEFT JOIN customer ON rental.customer_id = customer.customer_id
-     LEFT JOIN address ON customer.address_id = address.address_id
-     LEFT JOIN city ON address.city_id = city.city_id
-     LEFT JOIN country ON city.country_id = country.country_id
-     WHERE country = 'United States');
+    INNER JOIN customer ON rental.customer_id = customer.customer_id
+    INNER JOIN address ON customer.address_id = address.address_id
+    INNER JOIN city ON address.city_id = city.city_id
+    INNER JOIN country ON city.country_id = country.country_id
+    INNER JOIN inventory ON rental.inventory_id = inventory.inventory_id
+    WHERE country = 'United States')
+ORDER BY title ASC;
